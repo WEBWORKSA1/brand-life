@@ -113,7 +113,7 @@ Acceptance: workflow green; news.json non-empty after first scheduled run.
 ```
 Pages: about, contact, privacy (Google advertising cookie disclosure + opt-out links + consent), terms, disclaimer,
 trademark & copyright (independence from "BrandLife", nominative use, takedown process), 404, thank-you (noindex).
-Files: ads.txt (google.com, pub-6620975821265271, DIRECT, f08c47fec0942fa0), robots.txt, sitemap.xml, manifest, .nojekyll.
+Files: ads.txt (google.com, pub-6620975821265271, DIRECT, f08c47fec0942fa0), robots.txt, sitemap.xml, manifest, _config.yml (no .nojekyll — Jekyll must run).
 QA: grep the repo for the contact email (must return nothing), confirm AdSense script count = 1 per page, owner strip on
 every page, broken-link check, mobile + desktop screenshots.
 ```
