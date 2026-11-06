@@ -145,11 +145,30 @@
     tipEl.textContent = window.BL_TIPS[day % window.BL_TIPS.length];
   }
 
-  /* News feed (refreshed daily by the site's GitHub Action) */
+  /* News feed: data/news.json (refreshed by the optional GitHub Action) with a live RSS fallback,
+     cached on the visitor's device for 6 hours. */
+  var FEEDS = [["Branding Strategy Insider", "https://brandingstrategyinsider.com/feed/"], ["The Branding Journal", "https://www.thebrandingjournal.com/feed/"],
+    ["Logo Design Love", "https://www.logodesignlove.com/feed"], ["Marketing Week", "https://www.marketingweek.com/feed/"], ["Creative Review", "https://www.creativereview.co.uk/feed/"]];
+  function liveNews() {
+    try { var c = JSON.parse(store.get("bl-news") || "null"); if (c && Date.now() - c.t < 216e5 && c.j.items.length) return Promise.resolve(c.j); } catch (e) {}
+    return Promise.all(FEEDS.map(function (f) {
+      return fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(f[1])).then(function (r) { return r.json(); })
+        .then(function (j) { return (j.items || []).slice(0, 6).map(function (it) { var d = new Date((it.pubDate || "").replace(" ", "T") + "Z"); return { title: it.title, link: it.link, source: f[0], _t: +d || 0, date: isNaN(d) ? "" : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) }; }); })
+        .catch(function () { return []; });
+    })).then(function (lists) {
+      var items = [].concat.apply([], lists).sort(function (a, b) { return b._t - a._t; });
+      var j = { updated: new Date().toLocaleString(), items: items };
+      if (items.length) store.set("bl-news", JSON.stringify({ t: Date.now(), j: j }));
+      return j;
+    });
+  }
   var newsBox = document.querySelector("[data-news]");
   if (newsBox) {
     var limit = parseInt(newsBox.getAttribute("data-news"), 10) || 30;
-    fetch(newsBox.getAttribute("data-src")).then(function (r) { return r.json(); }).then(function (j) {
+    fetch(newsBox.getAttribute("data-src")).then(function (r) { return r.json(); })
+      .catch(function () { return { items: [] }; })
+      .then(function (j) { return (j.items && j.items.length) ? j : liveNews(); })
+      .then(function (j) {
       var items = (j.items || []).slice(0, limit);
       if (!items.length) return;
       newsBox.innerHTML = "";
