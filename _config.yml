@@ -1,0 +1,8 @@
+title: Brand.Life
+url: https://brand.life
+exclude:
+  - _build
+  - README.md
+  - PROMPTS.md
+  - RESEARCH.md
+  - .gitignore

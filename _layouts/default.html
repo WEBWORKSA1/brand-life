@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+{{ page.basetag }}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.full_title | escape }}</title>
+<meta name="description" content="{{ page.description | escape }}">
+{{ page.robots }}
+<link rel="canonical" href="{{ page.canon }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Brand.Life">
+<meta property="og:title" content="{{ page.full_title | escape }}">
+<meta property="og:description" content="{{ page.description | escape }}">
+<meta property="og:url" content="{{ page.canon }}">
+<meta property="og:image" content="https://brand.life/assets/img/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#16120F">
+<meta name="google-adsense-account" content="ca-pub-6620975821265271">
+<link rel="icon" href="{{ page.pre }}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="{{ page.pre }}site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ page.pre }}assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6620975821265271" crossorigin="anonymous"></script>
+{{ page.jsonld }}
+{{ page.extra_head }}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="owner-strip">Contact, if you are interested in this website / domain name / Sponsorship / Advertisement / Partnership — <a href="https://web.works/contact" target="_blank" rel="noopener">contact here</a></div>
+<header class="site-head">
+ <div class="wrap head-row">
+  <a class="brand" href="{{ page.pre }}index.html" aria-label="Brand.Life home"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#16120F"/><circle cx="20" cy="20" r="13" fill="none" stroke="#FF4F2B" stroke-width="2.4" stroke-dasharray="62 20" stroke-linecap="round" transform="rotate(-60 20 20)"/><path d="M15 12.5h6.2c2.9 0 4.6 1.4 4.6 3.7 0 1.5-.8 2.6-2.1 3.1 1.7.4 2.8 1.7 2.8 3.5 0 2.6-2 4.2-5.1 4.2H15z" fill="#F7F2EA"/><circle cx="29.5" cy="29" r="2.2" fill="#0D9488"/></svg><span>Brand<span class="dot">.</span>Life</span></a>
+  <button class="icon-btn menu-btn" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  <nav class="nav" id="nav" aria-label="Main"><a href="{{ page.pre }}tools/"{% if page.nav_key == "tools/" %} aria-current="page"{% endif %}>Free tools</a><a href="{{ page.pre }}guides/"{% if page.nav_key == "guides/" %} aria-current="page"{% endif %}>Guides</a><a href="{{ page.pre }}guides/brand-life-cycle.html"{% if page.nav_key == "guides/brand-life-cycle.html" %} aria-current="page"{% endif %}>Life Cycle</a><a href="{{ page.pre }}videos.html"{% if page.nav_key == "videos.html" %} aria-current="page"{% endif %}>Videos</a><a href="{{ page.pre }}news.html"{% if page.nav_key == "news.html" %} aria-current="page"{% endif %}>News</a><a href="{{ page.pre }}contests.html"{% if page.nav_key == "contests.html" %} aria-current="page"{% endif %}>Contests</a><a href="{{ page.pre }}support.html"{% if page.nav_key == "support.html" %} aria-current="page"{% endif %}>Support</a><a class="btn small" href="{{ page.pre }}audit.html">Free brand audit</a>
+   <button class="icon-btn" data-theme-toggle aria-label="Switch light or dark theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </nav>
+ </div>
+</header>
+<main id="main">
+{{ content }}
+</main>
+<footer class="site-foot">
+ <div class="wrap">
+  <div class="foot-grid">
+   <div>
+    <a class="brand" href="{{ page.pre }}index.html" style="color:#fff"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#16120F"/><circle cx="20" cy="20" r="13" fill="none" stroke="#FF4F2B" stroke-width="2.4" stroke-dasharray="62 20" stroke-linecap="round" transform="rotate(-60 20 20)"/><path d="M15 12.5h6.2c2.9 0 4.6 1.4 4.6 3.7 0 1.5-.8 2.6-2.1 3.1 1.7.4 2.8 1.7 2.8 3.5 0 2.6-2 4.2-5.1 4.2H15z" fill="#F7F2EA"/><circle cx="29.5" cy="29" r="2.2" fill="#0D9488"/></svg><span>Brand<span class="dot">.</span>Life</span></a>
+    <p style="margin-top:14px">Free tools, guides and expert help to build a brand that lasts — from the first spark to the next renewal.</p>
+    <form class="form" data-form="Newsletter signup" data-ok="You're in. The next Brand Notes issue lands on Tuesday." style="margin-top:14px">
+     <label for="nl-email" style="color:#fff">Brand Notes — one practical branding idea every Tuesday</label>
+     <div class="hp" aria-hidden="true"><label>Leave empty<input name="_hp" tabindex="-1" autocomplete="off"></label></div>
+     <input id="nl-email" type="email" name="email" placeholder="you@yourbrand.com" required autocomplete="email">
+     <select name="stage" aria-label="Your brand stage"><option value="">Your brand stage (optional)</option><option>Spark — idea stage</option><option>Launch — first customers</option><option>Grow — building presence</option><option>Scale — many people touch the brand</option><option>Renew — refresh or rebrand</option></select>
+     <button class="btn" type="submit">Subscribe free</button>
+     <p class="form-status" aria-live="polite"></p>
+    </form>
+   </div>
+   <div><h4>Free tools</h4><ul><li><a href="{{ page.pre }}tools/name-generator.html">Brand Name Generator</a></li><li><a href="{{ page.pre }}tools/name-tester.html">Brand Name Tester</a></li><li><a href="{{ page.pre }}tools/tagline-generator.html">Tagline & Slogan Generator</a></li><li><a href="{{ page.pre }}tools/color-palette.html">Color Palette Generator</a></li><li><a href="{{ page.pre }}tools/font-pairing.html">Font Pairing Explorer</a></li><li><a href="{{ page.pre }}tools/brand-archetype-quiz.html">Brand Archetype Quiz</a></li><li><a href="{{ page.pre }}tools/">All 10 tools →</a></li></ul></div>
+   <div><h4>Get involved</h4><ul>
+    <li><a href="{{ page.pre }}audit.html">Free brand audit</a></li><li><a href="{{ page.pre }}audit.html#match">Hire branding talent</a></li>
+    <li><a href="{{ page.pre }}contests.html">Contests &amp; prizes</a></li><li><a href="{{ page.pre }}support.html">Support Brand.Life</a></li>
+    <li><a href="{{ page.pre }}careers.html">Work &amp; write with us</a></li><li><a href="{{ page.pre }}advertise.html">Advertise &amp; sponsor</a></li></ul></div>
+   <div><h4>About</h4><ul>
+    <li><a href="{{ page.pre }}about.html">About us</a></li><li><a href="{{ page.pre }}contact.html">Contact</a></li>
+    <li><a href="{{ page.pre }}privacy.html">Privacy &amp; cookies</a></li><li><a href="{{ page.pre }}terms.html">Terms of use</a></li>
+    <li><a href="{{ page.pre }}disclaimer.html">Disclaimer</a></li><li><a href="{{ page.pre }}trademark.html">Trademark &amp; copyright</a></li>
+    <li><a href="{{ page.pre }}sitemap.html">Site map</a></li></ul></div>
+  </div>
+  <div class="foot-legal">
+   <p>© <span data-year>2026</span> Brand.Life. All original articles, tools, quizzes, frameworks and designs on this site are protected by copyright. All rights reserved.</p>
+   <p><b>Trademark notice:</b> "Brand.Life" is the name of this independent educational website. It is not affiliated with, endorsed by or connected to any company, product, agency or service that uses "BrandLife", "Brand Life" or a similar name or mark. All third-party names, logos and marks mentioned belong to their respective owners and are used for identification and commentary only. <a href="{{ page.pre }}trademark.html">Full disclosure</a>.</p>
+   <p>Content is for general education, not legal, financial or trademark advice. Ads are served by Google AdSense; some outbound links may become affiliate links, which never change our recommendations.</p>
+  </div>
+ </div>
+</footer>
+<div class="consent" id="consent" hidden role="dialog" aria-label="Cookie notice">
+ <p>We use cookies to run this site and, through Google AdSense, to show ads. Choose personalized ads, or essential cookies only with non-personalized ads. See our <a href="{{ page.pre }}privacy.html">privacy policy</a>.</p>
+ <div class="acts"><button class="btn small" data-consent="all">Accept all</button><button class="btn small alt" data-consent="essential">Essential only</button></div>
+</div>
+<script src="{{ page.pre }}assets/js/config.js"></script>
+<script src="{{ page.pre }}assets/js/main.js"></script>
+{{ page.scripts }}
+</body>
+</html>
