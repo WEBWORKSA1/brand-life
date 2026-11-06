@@ -1,0 +1,48 @@
+---
+layout: "default"
+full_title: "Brand Health Score — Free Online Tool | Brand.Life"
+description: "Rate your brand across five dimensions and get a priority plan. Free, no sign-up, runs in your browser."
+canon: "https://brand.life/tools/brand-health-score.html"
+pre: "../"
+nav_key: "tools/"
+jsonld: "<script type=\"application/ld+json\">[{\"@context\": \"https://schema.org\", \"@type\": \"WebApplication\", \"name\": \"Brand Health Score\", \"applicationCategory\": \"BusinessApplication\", \"operatingSystem\": \"Any (web browser)\", \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}, \"url\": \"https://brand.life/tools/brand-health-score.html\", \"description\": \"Rate your brand across five dimensions and get a priority plan.\"}, {\"@context\": \"https://schema.org\", \"@type\": \"FAQPage\", \"mainEntity\": [{\"@type\": \"Question\", \"name\": \"What does the Brand Health Score measure?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Twenty statements across five dimensions: clarity, identity, consistency, visibility and loyalty. Each answer is scored 0–4 and converted to a score out of 100.\"}}, {\"@type\": \"Question\", \"name\": \"What's a good score?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"80+ is thriving, 60–79 growing, 40–59 fragile and under 40 at risk. The most useful output is your weakest dimension — that's where effort pays back fastest.\"}}, {\"@type\": \"Question\", \"name\": \"Do you store my answers?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Only if you request the emailed plan; then your scores are sent with your request so we can personalize it.\"}}]}]</script>"
+robots: ""
+basetag: ""
+scripts: "<script src=\"../assets/js/tools.js\"></script>"
+extra_head: ""
+---
+<section><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> / <a href="../tools/">Free tools</a> / <span>Brand Health Score</span></nav>
+<div class="sec-head"><span class="eyebrow">Strategy · free tool</span><h1>Brand Health Score</h1><p class="muted">Rate 20 statements honestly. You'll get a score out of 100, a breakdown across five brand dimensions and your three highest-impact priorities.</p></div>
+<div class="tool-shell" style="grid-template-columns:1fr">
+<form class="form" id="health" style="grid-column:1/-1">
+ <div class="grid qs" style="gap:12px"></div>
+ <button class="btn" type="submit">Calculate my Brand Health Score</button>
+</form>
+<div id="hs-result" hidden style="grid-column:1/-1">
+ <div class="grid g2" style="align-items:start">
+  <div class="card"><span class="eyebrow">Your Brand Health Score</span><div class="score-big" id="hs-score">0</div><p><b id="hs-band"></b> · out of 100</p><div class="grid" id="hs-dims" style="gap:10px"></div>
+   <h3 style="margin-top:18px">Your top 3 priorities</h3><ol id="hs-actions"></ol></div>
+  <div class="lead-box">
+   <span class="eyebrow">Free personalized plan</span>
+   <h3>Get your 90-day brand plan by email</h3>
+   <p class="muted">We'll send your score breakdown with a step-by-step plan for your three weakest areas — reviewed by a branding specialist, free.</p>
+   <form class="form" id="hs-lead" data-form="Brand Health Score plan request" data-redirect="../thank-you.html">
+    <div class="hp" aria-hidden="true"><label>Leave empty<input name="_hp" tabindex="-1" autocomplete="off"></label></div>
+    <input name="name" placeholder="Your name" required aria-label="Your name">
+    <input type="email" name="email" placeholder="Email" required aria-label="Email">
+    <input name="website" placeholder="Website (optional)" aria-label="Website">
+    <label class="fine"><input type="checkbox" name="wants_expert" value="Yes — introduce me to a vetted expert" style="width:auto"> Also introduce me to a vetted branding expert</label>
+    <button class="btn" type="submit">Send my free plan</button>
+    <p class="form-status" aria-live="polite"></p>
+   </form>
+  </div>
+ </div>
+</div>
+</div>
+<div class="cta-inline no-print"><div><h3>Want a professional to look at this?</h3><p style="margin:0;opacity:.9">Get a free brand audit from a specialist — no obligation.</p></div><a class="btn" href="../audit.html">Request free audit</a></div>
+</div></section>
+<section class="sec-alt no-print"><div class="wrap grid g2" style="align-items:start">
+ <div><span class="eyebrow">Learn more</span><h2>Read: How to Measure Brand Health: 10 Metrics That Matter</h2><p class="muted">Awareness, consideration, share of search, NPS and more — how to track brand health with free tools and simple surveys.</p><a class="btn alt" href="../guides/measuring-brand-health.html">Read the guide</a></div>
+ <div><span class="eyebrow">FAQ</span><details><summary>What does the Brand Health Score measure?</summary><p>Twenty statements across five dimensions: clarity, identity, consistency, visibility and loyalty. Each answer is scored 0–4 and converted to a score out of 100.</p></details><details><summary>What&#x27;s a good score?</summary><p>80+ is thriving, 60–79 growing, 40–59 fragile and under 40 at risk. The most useful output is your weakest dimension — that's where effort pays back fastest.</p></details><details><summary>Do you store my answers?</summary><p>Only if you request the emailed plan; then your scores are sent with your request so we can personalize it.</p></details></div>
+</div></section>
+<section class="no-print"><div class="wrap"><h2>More free tools</h2><div class="grid g3"><a class="card" href="name-generator.html"><span class="tag">Naming</span><h3>Brand Name Generator</h3><p>Dozens of brandable names from your keywords, with a quick .com check.</p></a><a class="card" href="name-tester.html"><span class="tag">Naming</span><h3>Brand Name Tester</h3><p>Score any name for length, rhythm, spelling and the radio test.</p></a><a class="card" href="tagline-generator.html"><span class="tag">Messaging</span><h3>Tagline & Slogan Generator</h3><p>Taglines in five tones — bold, warm, clever, premium or simple.</p></a></div></div></section>
