@@ -1,0 +1,38 @@
+---
+layout: "default"
+full_title: "Color Palette Generator — Free Online Tool | Brand.Life"
+description: "Harmonious palettes with WCAG contrast checks and CSS export. Free, no sign-up, runs in your browser."
+canon: "https://brand.life/tools/color-palette.html"
+pre: "../"
+nav_key: "tools/"
+jsonld: "<script type=\"application/ld+json\">[{\"@context\": \"https://schema.org\", \"@type\": \"WebApplication\", \"name\": \"Color Palette Generator\", \"applicationCategory\": \"BusinessApplication\", \"operatingSystem\": \"Any (web browser)\", \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}, \"url\": \"https://brand.life/tools/color-palette.html\", \"description\": \"Harmonious palettes with WCAG contrast checks and CSS export.\"}, {\"@context\": \"https://schema.org\", \"@type\": \"FAQPage\", \"mainEntity\": [{\"@type\": \"Question\", \"name\": \"How many colors should a brand have?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"Usually one primary, one or two secondary and a neutral range. A rough 60-30-10 split between neutral, secondary and primary keeps things balanced.\"}}, {\"@type\": \"Question\", \"name\": \"What contrast ratio do I need?\", \"acceptedAnswer\": {\"@type\": \"Answer\", \"text\": \"WCAG AA asks for at least 4.5:1 for normal body text and 3:1 for large text. The table shows which of your colors pass on white or black.\"}}]}]</script>"
+robots: ""
+basetag: ""
+scripts: "<script src=\"../assets/js/tools.js\"></script>"
+extra_head: ""
+---
+<section><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> / <a href="../tools/">Free tools</a> / <span>Color Palette Generator</span></nav>
+<div class="sec-head"><span class="eyebrow">Identity · free tool</span><h1>Color Palette Generator</h1><p class="muted">Start with one brand color and build a full palette using classic color harmonies. Every color is checked for WCAG text contrast so your brand stays readable.</p></div>
+<div class="tool-shell">
+<form class="form card" id="palette">
+ <label for="pl-base">Base brand color</label><input type="color" id="pl-base" value="#ff4f2b" style="height:54px;padding:4px">
+ <label for="pl-mode">Harmony</label>
+ <select id="pl-mode"><option value="mono">Monochrome scale</option><option value="analogous">Analogous</option><option value="complementary">Complementary</option><option value="triadic">Triadic</option><option value="split">Split complementary</option></select>
+ <button class="btn alt" type="button" id="pl-random">Random base color</button>
+ <p class="fine">Click any swatch to copy its HEX value.</p>
+</form>
+<div>
+ <div class="swatches" id="pl-out"></div>
+ <h3 style="margin-top:22px">Accessibility check (WCAG)</h3>
+ <div class="article" style="max-width:none"><table id="pl-contrast"></table></div>
+ <h3>CSS variables</h3><pre class="card" id="pl-css" style="white-space:pre-wrap;overflow:auto"></pre>
+ <button class="copy" type="button" id="pl-copy">Copy CSS</button>
+</div>
+</div>
+<div class="cta-inline no-print"><div><h3>Want a professional to look at this?</h3><p style="margin:0;opacity:.9">Get a free brand audit from a specialist — no obligation.</p></div><a class="btn" href="../audit.html">Request free audit</a></div>
+</div></section>
+<section class="sec-alt no-print"><div class="wrap grid g2" style="align-items:start">
+ <div><span class="eyebrow">Learn more</span><h2>Read: Brand Color Psychology: What Colors Really Communicate</h2><p class="muted">What common brand colors suggest, why category context matters more than color charts, and how to choose an accessible palette.</p><a class="btn alt" href="../guides/brand-color-psychology.html">Read the guide</a></div>
+ <div><span class="eyebrow">FAQ</span><details><summary>How many colors should a brand have?</summary><p>Usually one primary, one or two secondary and a neutral range. A rough 60-30-10 split between neutral, secondary and primary keeps things balanced.</p></details><details><summary>What contrast ratio do I need?</summary><p>WCAG AA asks for at least 4.5:1 for normal body text and 3:1 for large text. The table shows which of your colors pass on white or black.</p></details></div>
+</div></section>
+<section class="no-print"><div class="wrap"><h2>More free tools</h2><div class="grid g3"><a class="card" href="name-generator.html"><span class="tag">Naming</span><h3>Brand Name Generator</h3><p>Dozens of brandable names from your keywords, with a quick .com check.</p></a><a class="card" href="name-tester.html"><span class="tag">Naming</span><h3>Brand Name Tester</h3><p>Score any name for length, rhythm, spelling and the radio test.</p></a><a class="card" href="tagline-generator.html"><span class="tag">Messaging</span><h3>Tagline & Slogan Generator</h3><p>Taglines in five tones — bold, warm, clever, premium or simple.</p></a></div></div></section>
