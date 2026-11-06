@@ -11,7 +11,7 @@ Static site, hosted free on GitHub Pages.
 | 12 guides | `guides/*.html`, source in `_build/guides.py` |
 | Lead generation | `audit.html` (3-step audit, expert matching, expert network), lead boxes site-wide, Brand Health Score plan |
 | Monetization | Google AdSense auto ads on every page, `advertise.html`, `support.html`, `contests.html` (sponsors) |
-| Self-updating | `data/news.json` refreshed daily by `.github/workflows/pages.yml`; daily rotating tip |
+| Self-updating | live RSS news in the browser (cached 6 h), `data/news.json` + optional daily workflow in `_build/`, daily rotating tip |
 | Compliance | privacy, terms, disclaimer, trademark, about, contact, `ads.txt`, `sitemap.xml`, `robots.txt` |
 | Docs | `RESEARCH.md` (concept + 35-site study), `PROMPTS.md` (phase-wise build prompts) |
 
@@ -19,7 +19,7 @@ Static site, hosted free on GitHub Pages.
 
 1. Edit `_build/build.py` (pages) or `_build/guides.py` (articles).
 2. Run `pip install markdown && python3 _build/build.py`.
-3. Commit and push to `main`. The workflow rebuilds and publishes automatically.
+3. Commit and push to `main`. GitHub Pages republishes automatically.
 
 ## Settings you can change without code
 
