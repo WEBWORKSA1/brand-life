@@ -19,6 +19,8 @@ TODAY = datetime.date.today()
 ADS = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6620975821265271" crossorigin="anonymous"></script>'
 OWNER = "https://web.works/contact"
 PAGES = []
+# JEKYLL=1 (default): emit front matter + body and one _layouts/default.html; GitHub Pages renders the shared chrome.
+JEKYLL = os.environ.get("JEKYLL", "1") == "1"
 # 404 pages are served at any depth, so they need a base URL. Works on brand.life and on <user>.github.io/Brand-Life/.
 BASETAG = "<script>(function(){var p=location.pathname.split('/')[1]||'';document.write('<base href=\"'+(p.toLowerCase()==='brand-life'?'/'+p+'/':'/')+'\">');})();</script>"
 
@@ -130,15 +132,8 @@ def footer(pre):
 </footer>"""
 
 
-def page(path, title, desc, body, nav_key=None, scripts="", jsonld=None, extra_head="", noindex=False, basetag=""):
-    depth = path.count("/")
-    pre = "../" * depth
-    canon = BASE_URL + "/" + (path[:-10] if path.endswith("index.html") else path)
-    full = title if "Brand.Life" in title else f"{title} | Brand.Life"
-    ld = ('<script type="application/ld+json">' + json.dumps(jsonld, ensure_ascii=False) + "</script>") if jsonld else ""
-    robots = '<meta name="robots" content="noindex">' if noindex else ""
-    body = body.replace("{pre}", pre)
-    doc = f"""<!doctype html>
+def render(full, desc, robots, canon, pre, ld, extra_head, nav_key, body, scripts, basetag, nav=None):
+    return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -174,7 +169,7 @@ def page(path, title, desc, body, nav_key=None, scripts="", jsonld=None, extra_h
  <div class="wrap head-row">
   <a class="brand" href="{pre}index.html" aria-label="Brand.Life home">{LOGO}<span>Brand<span class="dot">.</span>Life</span></a>
   <button class="icon-btn menu-btn" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-  <nav class="nav" id="nav" aria-label="Main">{nav_html(pre, nav_key)}<a class="btn small" href="{pre}audit.html">Free brand audit</a>
+  <nav class="nav" id="nav" aria-label="Main">{nav if nav is not None else nav_html(pre, nav_key)}<a class="btn small" href="{pre}audit.html">Free brand audit</a>
    <button class="icon-btn" data-theme-toggle aria-label="Switch light or dark theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
   </nav>
  </div>
@@ -193,6 +188,24 @@ def page(path, title, desc, body, nav_key=None, scripts="", jsonld=None, extra_h
 </body>
 </html>
 """
+
+
+def page(path, title, desc, body, nav_key=None, scripts="", jsonld=None, extra_head="", noindex=False, basetag=""):
+    depth = path.count("/")
+    pre = "../" * depth
+    canon = BASE_URL + "/" + (path[:-10] if path.endswith("index.html") else path)
+    full = title if "Brand.Life" in title else f"{title} | Brand.Life"
+    ld = ('<script type="application/ld+json">' + json.dumps(jsonld, ensure_ascii=False) + "</script>") if jsonld else ""
+    robots = '<meta name="robots" content="noindex">' if noindex else ""
+    body = body.replace("{pre}", pre)
+    if JEKYLL:
+        fm = {"layout": "default", "full_title": full, "description": desc, "canon": canon, "pre": pre, "nav_key": nav_key or "",
+              "jsonld": ld, "robots": robots, "basetag": basetag, "scripts": scripts, "extra_head": extra_head}
+        if "{{" in body or "{%" in body:
+            raise SystemExit("Liquid-like syntax in body of " + path)
+        doc = "---\n" + "".join(f"{k}: {json.dumps(v, ensure_ascii=False)}\n" for k, v in fm.items()) + "---\n" + body.strip() + "\n"
+    else:
+        doc = render(full, desc, robots, canon, pre, ld, extra_head, nav_key, body, scripts, basetag)
     dest = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(dest) or ROOT, exist_ok=True)
     with open(dest, "w", encoding="utf-8") as f:
@@ -605,7 +618,7 @@ def build_guides():
 <div class="grid g3">{cards}</div></div></section>"""
     page("guides/index.html", "Branding Guides: Strategy, Naming, Identity & Growth", "Free in-depth guides on brand strategy, naming, identity design, brand voice, personal branding, rebranding and measuring brand health.", body, nav_key="guides/")
     for i, g in enumerate(GUIDES):
-        md = markdown.Markdown(extensions=["tables", "toc"])
+        md = markdown.Markdown(extensions=["tables", "toc", "sane_lists"])
         content = md.convert(g["body"])
         heads = []
         for tok in md.toc_tokens:
@@ -620,8 +633,11 @@ def build_guides():
         nxt = GUIDES[(i + 1) % len(GUIDES)]
         related = [x for x in GUIDES if x["slug"] != g["slug"] and x["cat"] == g["cat"]][:2] + [nxt]
         seen, rel = set(), []
+        k = 2
+        while len(related) < 6:
+            related.append(GUIDES[(i + k) % len(GUIDES)]); k += 1
         for x in related:
-            if x["slug"] not in seen:
+            if x["slug"] not in seen and x["slug"] != g["slug"]:
                 seen.add(x["slug"]); rel.append(x)
         rel_html = "".join(f'<a class="card" href="{x["slug"]}.html"><span class="tag">{x["cat"]}</span><h3>{esc(x["title"])}</h3><p>{esc(x["desc"])}</p></a>' for x in rel[:3])
         # split content roughly in half to place the audit CTA mid-article
@@ -790,7 +806,7 @@ SOURCES = [("Branding Strategy Insider", "https://brandingstrategyinsider.com/")
 def build_news():
     src = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{n}</a></li>' for n, u in SOURCES)
     body = f"""<section><div class="wrap">{crumbs((None, "News"))}
-<div class="grid g2" style="grid-template-columns:2fr 1fr;align-items:start">
+<div class="grid g2 news-grid" style="align-items:start">
 <div>
  <span class="eyebrow">Updated automatically every day</span><h1>Branding news</h1>
  <p class="muted" data-news-updated>The latest headlines from respected branding, design and marketing publications.</p>
@@ -799,7 +815,8 @@ def build_news():
 <aside class="card"><h3>Our sources</h3><ul>{src}</ul><p class="fine">Headlines link to the original publisher. We show titles only and never copy articles.</p>
 <hr style="border:0;border-top:1px solid var(--line)"><h3>Get the weekly digest</h3><p class="muted">The best of the week's branding news, with our take — every Tuesday.</p><a class="btn small" href="#nl-email">Subscribe free</a></aside>
 </div></div></section>"""
-    page("news.html", "Branding News — Updated Daily", "Daily branding, design and marketing headlines from leading publications, refreshed automatically.", body, nav_key="news.html")
+    page("news.html", "Branding News — Updated Daily", "Daily branding, design and marketing headlines from leading publications, refreshed automatically.", body, nav_key="news.html",
+         extra_head="<style>.news-grid{grid-template-columns:2fr 1fr}@media (max-width:860px){.news-grid{grid-template-columns:1fr}}</style>")
 
 
 # ------------------------------------------------------------------ CONTESTS / SUPPORT / CAREERS / ADVERTISE
@@ -813,16 +830,16 @@ def build_contests():
 <span class="eyebrow">Monthly creative challenges</span><h1>Brand Challenges: create, compete, win.</h1>
 <p class="lead muted">Every month we publish a brief for a fictional brand. Submit a name, a tagline or a logo concept. Winners receive cash prizes, a feature on Brand.Life and a portfolio review from a working professional.</p>
 <div class="grid g3" style="margin-top:30px">
- <div class="card"><span class="tag hot">Open now · {month_name()}</span><h3>Name the Brand</h3><p>Brief: a refillable household-cleaning startup for small apartments. Suggest a name and a one-line reason.</p><p><b>Prize:</b> $150 + feature</p></div>
- <div class="card"><span class="tag hot">Open now · {month_name()}</span><h3>Tagline Sprint</h3><p>Brief: a neighborhood bike-repair shop that comes to you. Write a tagline under eight words.</p><p><b>Prize:</b> $100 + feature</p></div>
- <div class="card"><span class="tag">Opens {month_name(1)}</span><h3>Logo Concept Challenge</h3><p>Brief: an independent bookshop and café. Submit a logo concept as a link to your file.</p><p><b>Prize:</b> $300 + portfolio review</p></div>
+ <div class="card"><span class="tag hot">Open now · <span data-mo="0">{month_name()}</span></span><h3>Name the Brand</h3><p>Brief: a refillable household-cleaning startup for small apartments. Suggest a name and a one-line reason.</p><p><b>Prize:</b> $150 + feature</p></div>
+ <div class="card"><span class="tag hot">Open now · <span data-mo="0">{month_name()}</span></span><h3>Tagline Sprint</h3><p>Brief: a neighborhood bike-repair shop that comes to you. Write a tagline under eight words.</p><p><b>Prize:</b> $100 + feature</p></div>
+ <div class="card"><span class="tag">Opens <span data-mo="1">{month_name(1)}</span></span><h3>Logo Concept Challenge</h3><p>Brief: an independent bookshop and café. Submit a logo concept as a link to your file.</p><p><b>Prize:</b> $300 + portfolio review</p></div>
 </div></div></section>
 <section class="sec-alt"><div class="wrap grid g2" style="align-items:start">
 <div class="lead-box">
  <h2>Enter a challenge</h2>
  <form class="form" data-form="Contest entry" data-ok="Entry received! Winners are announced in the first week of next month.">
   {hp()}
-  <select name="challenge" required aria-label="Challenge"><option value="">Choose a challenge</option><option>Name the Brand — {month_name()}</option><option>Tagline Sprint — {month_name()}</option><option>Logo Concept Challenge — {month_name(1)} (early entry)</option></select>
+  <select name="challenge" required aria-label="Challenge"><option value="">Choose a challenge</option><option data-mo-tpl="Name the Brand — #0">Name the Brand — {month_name()}</option><option data-mo-tpl="Tagline Sprint — #0">Tagline Sprint — {month_name()}</option><option data-mo-tpl="Logo Concept Challenge — #1 (early entry)">Logo Concept Challenge — {month_name(1)} (early entry)</option></select>
   <textarea name="entry" rows="3" placeholder="Your name idea, tagline, or a link to your logo file" required aria-label="Entry"></textarea>
   <textarea name="rationale" rows="2" placeholder="Why it works (one or two sentences)" aria-label="Rationale"></textarea>
   <div class="row"><input name="name" placeholder="Your name" required aria-label="Your name"><input type="email" name="email" placeholder="Email" required aria-label="Email"></div>
@@ -854,7 +871,8 @@ def build_contests():
 <li><b>Originality:</b> entries must be your own work and must not infringe anyone's trademarks or copyright. Infringing entries are disqualified.</li>
 <li><b>Privacy:</b> entry details are used only to run the contest and contact entrants. See our <a href="{{pre}}privacy.html">privacy policy</a>.</li>
 </ul></div></section>"""
-    page("contests.html", "Branding Contests & Prizes — Monthly Brand Challenges", "Enter monthly naming, tagline and logo challenges for cash prizes and features, or sponsor a prize to reach creative founders.", body, nav_key="contests.html")
+    page("contests.html", "Branding Contests & Prizes — Monthly Brand Challenges", "Enter monthly naming, tagline and logo challenges for cash prizes and features, or sponsor a prize to reach creative founders.", body, nav_key="contests.html",
+         scripts="<script>(function(){var n=new Date(),m=function(o){return new Date(n.getFullYear(),n.getMonth()+o,1).toLocaleString('en',{month:'long'});};document.querySelectorAll('[data-mo]').forEach(function(e){e.textContent=m(+e.getAttribute('data-mo'));});document.querySelectorAll('[data-mo-tpl]').forEach(function(e){e.textContent=e.getAttribute('data-mo-tpl').replace('#0',m(0)).replace('#1',m(1));});})();</script>")
 
 
 def build_support():
@@ -1087,7 +1105,17 @@ def build_sitemap():
     open(os.path.join(ROOT, "sitemap.xml"), "w").write("\n".join(xml) + "\n")
 
 
+def write_layout():
+    nav = "".join(f'<a href="{{{{ page.pre }}}}{h}"{{% if page.nav_key == "{h}" %}} aria-current="page"{{% endif %}}>{l}</a>' for h, l in NAV)
+    lay = render("{{ page.full_title | escape }}", "{{ page.description | escape }}", "{{ page.robots }}", "{{ page.canon }}", "{{ page.pre }}",
+                 "{{ page.jsonld }}", "{{ page.extra_head }}", None, "{{ content }}", "{{ page.scripts }}", "{{ page.basetag }}", nav=nav)
+    os.makedirs(os.path.join(ROOT, "_layouts"), exist_ok=True)
+    open(os.path.join(ROOT, "_layouts", "default.html"), "w", encoding="utf-8").write(lay)
+
+
 if __name__ == "__main__":
+    if JEKYLL:
+        write_layout()
     build_home(); build_tools(); build_guides(); build_audit(); build_videos(); build_news()
     build_contests(); build_support(); build_careers(); build_advertise(); build_static(); build_sitemap()
     print(f"Built {len(PAGES)} indexable pages.")
